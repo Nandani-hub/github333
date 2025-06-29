@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// List of common C keywords
+const char* keywords[] = {
+    "auto", "break", "case", "char", "const", "continue", "default", "do",
+    "double", "else", "enum", "extern", "float", "for", "goto", "if",
+    "inline", "int", "long", "register", "restrict", "return", "short",
+    "signed", "sizeof", "static", "struct", "switch", "typedef", "union",
+    "unsigned", "void", "volatile", "while", "_Bool", "_Complex", "_Imaginary"
+};
+const int keywordCount = sizeof(keywords) / sizeof(keywords[0]);
+
+// Function to check if a token is a C keyword
+int isKeyword(const char* token) {
+    for (int i = 0; i < keywordCount; i++) {
+        if (strcmp(token, keywords[i]) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+// Main function
+int main() {
+    char input[256];
+    char* token;
+
+    printf("Enter a line of C code:\n");
+    fgets(input, sizeof(input), stdin);
+    input[strcspn(input, "\n")] = '\0';  // Remove newline
+
+    printf("\n Identifying keywords...\n");
+
+    // Tokenize the input using delimiters
+    token = strtok(input, " ,;(){}[]=+-*/<>!&|\"'\n\t");
+
+    while (token != NULL) {
+        if (isKeyword(token)) {
+            printf("'%s' is a keyword.\n", token);
+        }
+        token = strtok(NULL, " ,;(){}[]=+-*/<>!&|\"'\n\t");
+    }
+
+    return 0;
+}
